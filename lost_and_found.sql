@@ -252,6 +252,14 @@ INSERT INTO users (id, email, password_hash, first_name, last_name, role, is_ver
     (1, 'system@lostfound.local', '[SYSTEM_ACCOUNT_NOT_FOR_LOGIN]', 'System', 'Account', 'admin', FALSE);
 
 -- ============================================================
+-- Seed Data: Admin User
+--        Default admin account for the application.
+--        password: 1234
+-- ============================================================
+INSERT INTO users (email, password_hash, first_name, last_name, role, is_verified_member) VALUES
+    ('admin@georgebrown.ca', '$2b$10$Khirp1iJY947OEOVbBjC8OmVqXL4rPOOHzsBIFr/3QgEC6k3Rciq2', 'Admin', 'Admin', 'admin', TRUE);
+
+-- ============================================================
 -- Seed Data: Categories
 -- ============================================================
 INSERT INTO categories (name, description) VALUES
