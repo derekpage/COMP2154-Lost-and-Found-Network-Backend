@@ -101,6 +101,12 @@ Database connected successfully
 
 > Accounts registered with a `@georgebrown.ca` email are automatically marked as verified members.
 
+```
+admin account set up
+email: admin@georgebrown.ca
+password: 1234
+```
+
 ---
 
 ## Project Structure
