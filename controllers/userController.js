@@ -1,5 +1,7 @@
 import bcrypt from "bcryptjs";
 import * as userModel from "../models/userModel.js";
+import jwt from "jsonwebtoken";
+import { blacklistToken } from "../middleware/tokenBlacklist.js";
 
 export const getUsers = async (_req, res) => {
     const users = await userModel.findAll();
@@ -13,7 +15,7 @@ export const getUser = async (req, res) => {
 };
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const GBC_DOMAIN  = "@georgebrown.ca";
+const GBC_DOMAIN = "@georgebrown.ca";
 
 export const createUser = async (req, res) => {
     const { email, password, first_name, last_name, role = "user" } = req.body;
@@ -35,14 +37,56 @@ export const createUser = async (req, res) => {
     res.status(201).json(user);
 };
 
+// Seyma - Login Function
+
+export const login = async (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        return res.status(400).json({ error: "Email and password required" });
+    }
+
+    const user = await userModel.findByEmail(email);
+    if (!user) {
+        return res.status(401).json({ error: "Invalid credentials" });
+    }
+
+    const match = await bcrypt.compare(password, user.password_hash);
+    if (!match) {
+        return res.status(401).json({ error: "Invalid credentials" });
+    }
+
+    const token = jwt.sign(
+        { id: user.id, email: user.email, role: user.role },
+        process.env.JWT_SECRET,
+        { expiresIn: "1h" }
+    );
+
+    res.json({ token });
+};
+
+export const logout = (req, res) => {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+
+    if (!token) {
+        return res.status(400).json({ error: "No token provided" });
+    }
+
+    blacklistToken(token);
+    return res.status(200).json({ message: "Logged out successfully" });
+};
+
+//end 
+
 export const updateUser = async (req, res) => {
     const existing = await userModel.findById(req.params.id);
     if (!existing) return res.status(404).json({ error: "User not found" });
 
     const { first_name, last_name, is_verified_member } = req.body;
     const updated = await userModel.update(req.params.id, {
-        first_name:        first_name        ?? existing.first_name,
-        last_name:         last_name         ?? existing.last_name,
+        first_name: first_name ?? existing.first_name,
+        last_name: last_name ?? existing.last_name,
         is_verified_member: is_verified_member ?? existing.is_verified_member,
     });
     res.json(updated);
