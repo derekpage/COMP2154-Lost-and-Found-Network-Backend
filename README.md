@@ -91,12 +91,13 @@ Database connected successfully
 
 ### Users
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET` | `/api/users` | Get all users |
-| `GET` | `/api/users/:id` | Get user by ID |
-| `POST` | `/api/users` | Create a new user |
-| `PUT` | `/api/users/:id` | Update a user |
+| Method | Endpoint         | Description       |
+|--------|------------------|-------------------|
+| `GET` | `/api/users`     | Get all users     |
+| `GET` | `/api/users/:id` | Get user by ID    |
+| `POST` | `/api/users`     | Create a new user |
+| `PUT` | `/api/users/:id` | Update a user     |
+| `GET` | `/api/admin`     | View admin page   |
 
 
 > Accounts registered with a `@georgebrown.ca` email are automatically marked as verified members.
