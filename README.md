@@ -54,6 +54,7 @@ cp .env.example .env
 Open `.env` and update:
 
 ```env
+# Can be other user with access limited to lost_found_db
 DB_USER=root
 DB_PASSWORD=your_mysql_password
 DB_NAME=lost_found_db
@@ -65,6 +66,9 @@ DB_SOCKET=/tmp/mysql.sock
 # DB_SOCKET=
 DB_HOST=localhost
 DB_PORT=3306
+
+# Add JWT secret key
+JWT_SECRET=somethingHere
 
 PORT=3000
 ```
@@ -86,6 +90,25 @@ Database connected successfully
 ```
 
 ---
+
+## Interaction with React
+
+Use packages such as Axios to interact with back-end API endpoints within React code. E.G.
+```
+const [items, setItems] = useState([]);
+useEffect(() => {
+    const fetchAllItems = async () => {
+        try {
+            const res = await axios.get("http://localhost:3000/items");
+            setItems(res.data);
+        } catch(e) {
+            console.log(e);
+        }
+    }
+    fetchAllItems();
+})
+```
+Back-end serverr needs to be run seperately from front-end server
 
 ## API Endpoints Already Setup
 
