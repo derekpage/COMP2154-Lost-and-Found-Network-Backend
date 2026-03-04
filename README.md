@@ -108,19 +108,19 @@ useEffect(() => {
     fetchAllItems();
 })
 ```
-Back-end serverr needs to be run seperately from front-end server
+Back-end server needs to be run seperately from front-end server
 
 ## API Endpoints Already Setup
 
 ### Users
 
-| Method | Endpoint         | Description       |
-|--------|------------------|-------------------|
-| `GET` | `/api/users`     | Get all users     |
-| `GET` | `/api/users/:id` | Get user by ID    |
-| `POST` | `/api/users`     | Create a new user |
-| `PUT` | `/api/users/:id` | Update a user     |
-| `GET` | `/api/admin`     | View admin page   |
+| Method | Endpoint        | Description       |
+|--------|-----------------|-------------------|
+| `GET` | `/api/users`    | Get all users     |
+| `GET` | `/api/users/id` | Get user by ID    |
+| `POST` | `/api/users`    | Create a new user |
+| `PUT` | `/api/users/id` | Update a user     |
+| `GET` | `/api/admin/id` | View admin page   |
 
 
 > Accounts registered with a `@georgebrown.ca` email are automatically marked as verified members.
