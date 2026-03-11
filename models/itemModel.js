@@ -37,3 +37,11 @@ export async function create(item) {
     const [rows] = await pool.query("SELECT * FROM items WHERE id = ?", [result.insertId]);
     return rows.length ? mapItem(rows[0]) : null;
 }
+
+export const getItem = async (id) => {
+    const query = `SELECT ${SAFE_COLUMNS_ITEMS}
+                   FROM items
+                   WHERE id = ?`;
+    const [item] = await pool.query(query, [id]);
+    return item[0];
+}

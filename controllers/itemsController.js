@@ -66,3 +66,11 @@ export const createItem = async (req, res) => {
         return res.status(500).json({ error: "Server error" });
     }
 };
+
+export const getItem = async (req, res) => {
+    try {
+        res.status(200).json(await itemModel.getItem(req.params.id));
+    } catch (err) {
+        return res.status(500).json({ error: "Server error" });
+    }
+}
