@@ -66,3 +66,12 @@ export const updateItem = async (id, item) => {
     await pool.query(query, [update.title, update.description, update.location_details, update.date, update.status, id]);
     return getItem(id);
 }
+
+export const deleteItem = async (id) => {
+    const query = `DELETE
+                   FROM items
+                   WHERE id = ?`;
+    const result = await pool.query(query, [id]);
+    if (result.affectedRows === 0) throw new Error("Item not found");
+    return result;
+}

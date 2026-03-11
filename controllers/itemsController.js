@@ -83,3 +83,13 @@ export const updateItem = async (req, res) => {
         return res.status(500).json(err);
     }
 }
+
+export const deleteItem = async (req, res) => {
+    try {
+        const result = await itemModel.deleteItem(req.params.id);
+        res.status(200).json({message: "Deleted item"});
+    }
+    catch (err) {
+        return res.status(500).json(err);
+    }
+}
