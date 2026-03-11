@@ -45,3 +45,24 @@ export const getItem = async (id) => {
     const [item] = await pool.query(query, [id]);
     return item[0];
 }
+
+export const updateItem = async (id, item) => {
+    const existing = await getItem(id);
+    const update = {
+        title: item.title ?? existing.title,
+        description: item.description ?? existing.description,
+        location_details: item.location ?? existing.location_details,
+        date: item.date ?? existing.date,
+        status: item.status ?? existing.status
+    }
+    if (isNaN(Date.parse(update.date))) throw new TypeError("Invalid Date");
+    const query = `UPDATE items
+                   SET title            = ?,
+                       description      = ?,
+                       location_details = ?,
+                       date             = ?,
+                       status           = ?
+                   WHERE id = ?`;
+    await pool.query(query, [update.title, update.description, update.location_details, update.date, update.status, id]);
+    return getItem(id);
+}

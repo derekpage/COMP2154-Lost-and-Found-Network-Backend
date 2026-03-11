@@ -74,3 +74,12 @@ export const getItem = async (req, res) => {
         return res.status(500).json({ error: "Server error" });
     }
 }
+
+export const updateItem = async (req, res) => {
+    try {
+        const result = await itemModel.updateItem(req.params.id, req.body)
+        return res.status(200).json(result);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+}
