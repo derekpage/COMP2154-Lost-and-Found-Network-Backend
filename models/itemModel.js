@@ -1,5 +1,7 @@
 import pool from "../db.js";
 
+const SAFE_COLUMNS_ITEMS = "i.id, i.user_id, i.type, i.title, i.description, i.location_details, i.date, i.status, c.name AS category, l.display_name AS location";
+
 const mapItem = (row) => ({
     id: row.id,
     user_id: row.user_id,
@@ -39,9 +41,7 @@ export async function create(item) {
 }
 
 export const getItem = async (id) => {
-    const query = `SELECT ${SAFE_COLUMNS_ITEMS}
-                   FROM items
-                   WHERE id = ?`;
+    const query = `SELECT * FROM items WHERE id = ?`;
     const [item] = await pool.query(query, [id]);
     return item[0];
 }
