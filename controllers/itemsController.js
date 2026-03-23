@@ -58,6 +58,7 @@ export const createItem = async (req, res) => {
             description,
             location_details,
             date,
+            image_url: req.body.image_url ?? null,
             status: "active",
         });
 
