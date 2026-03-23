@@ -1,6 +1,7 @@
 import pool from "../db.js";
 
-const SAFE_COLUMNS_ITEMS = "i.id, i.user_id, i.type, i.title, i.description, i.location_details, i.date, i.status, c.name AS category, l.display_name AS location, img.image_url";
+
+const SAFE_COLUMNS_ITEMS = "i.id, i.user_id, i.type, i.title, i.description, i.location_details, i.date, i.status, c.name AS category, l.display_name AS location";
 
 const mapItem = (row) => ({
     id: row.id,
@@ -116,3 +117,11 @@ export const getItems = async (params = {}) => {
     const [items] = await pool.query(itemsQuery)
     return items;
 }
+
+export const findById = async (id) => {
+    const [rows] = await pool.query(
+        "SELECT * FROM items WHERE id = ? AND is_deleted = false",
+        [id]
+    );
+    return rows[0] || null;
+};
