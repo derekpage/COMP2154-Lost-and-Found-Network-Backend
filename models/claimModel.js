@@ -1,4 +1,7 @@
 import pool from "../db.js";
+import {findById as findUser} from "./userModel.js";
+import {findById as findItem} from "./itemModel.js";
+import {sendEmail} from "../controllers/emailController.js";
 
 export const create = async (claim) => {
     const [result] = await pool.query(
@@ -67,4 +70,34 @@ export const findByClaimantId = async (claimant_id) => {
         [claimant_id]
     );
     return rows || null;
+}
+
+export const withdrawClaim = async (id) => {
+    const query = `DELETE
+                   FROM claims
+                   WHERE id = ?`;
+    const result = await pool.query(query, [id]);
+    if (result.affectedRows === 0) throw new Error("Claim not found");
+    return result;
+}
+
+
+export const notifyApproval = async (user_id, claimant_id, item_id) => {
+    const user = await findUser(user_id);
+    const claimant = await findUser(claimant_id);
+    const item = await findItem(item_id);
+    const user_message = `
+        <p>Hello ${user.first_name}</p>
+        <p>We are reaching out to you regarding your found item, ${item.title}.</p>
+        <p>It has been flagged in our system as having an approved claim</p>
+        <p>You can contact the owner of the item at ${claimant.email}</p>
+    `;
+    await sendEmail(user.email,"Found Item Claim Approved", user_message);
+    const claimant_message = `
+        <p>Hello ${claimant.first_name}</p>
+        <p>We are reaching out to you regarding your lost item, ${item.title}.</p>
+        <p>Your claim to this item has been flagged as approved</p>
+        <p>You can contact the finder of the item at ${user.email}</p>
+    `;
+    await sendEmail(claimant.email,"Lost Item Claim Approved", claimant_message);
 }
