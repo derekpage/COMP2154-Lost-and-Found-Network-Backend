@@ -13,6 +13,10 @@ const useCloud = !!(
     process.env.CLOUDINARY_API_KEY &&
     process.env.CLOUDINARY_API_SECRET
 );
+console.log("Upload mode:", useCloud ? "cloudinary" : "disk",
+    "| CLOUD_NAME set:", !!process.env.CLOUDINARY_CLOUD_NAME,
+    "| API_KEY set:", !!process.env.CLOUDINARY_API_KEY,
+    "| API_SECRET set:", !!process.env.CLOUDINARY_API_SECRET);
 
 if (useCloud) {
     cloudinary.config({
